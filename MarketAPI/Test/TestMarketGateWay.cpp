@@ -42,3 +42,14 @@ void TestMarketGateWay::Run()
         usleep(500*1000);
     }
 }
+
+void TestMarketGateWay::GetCommitID(std::string& CommitID, std::string& UtilsCommitID)
+{
+    CommitID = SO_COMMITID;
+    UtilsCommitID = SO_UTILS_COMMITID;
+}
+
+void TestMarketGateWay::GetAPIVersion(std::string& APIVersion)
+{
+    APIVersion = API_VERSION;
+}

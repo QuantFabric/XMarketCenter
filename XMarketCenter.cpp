@@ -100,6 +100,9 @@ void XMarketCenter::Run()
     m_MarketDataLogger = Utils::Singleton<Utils::MarketDataLogger>::GetInstance();
     m_MarketDataLogger->Init();
 
+    // Update App Status
+    InitAppStatus();
+
     // start thread to pull market data
     m_pPullThread = new std::thread(&XMarketCenter::PullMarketData, this);
     m_pHandleThread = new std::thread(&XMarketCenter::HandleMarketData, this);
@@ -324,4 +327,63 @@ void XMarketCenter::UpdateLastMarketData()
         }
     }
     m_MarketDataSetVector.clear();
+}
+
+void XMarketCenter::InitAppStatus()
+{
+    Message::PackMessage message;
+    message.MessageType = Message::EMessageType::EAppStatus;
+    UpdateAppStatus(m_Command, message.AppStatus);
+    m_PackClient->SendData((const unsigned char*)&message, sizeof(message));
+}
+
+void XMarketCenter::UpdateAppStatus(const std::string& cmd, Message::TAppStatus& AppStatus)
+{
+    std::vector<std::string> ItemVec;
+    Utils::Split(cmd, " ", ItemVec);
+    std::string Account;
+    for(int i = 0; i < ItemVec.size(); i++)
+    {
+        if(Utils::equalWith(ItemVec.at(i), "-a"))
+        {
+            Account = ItemVec.at(i + 1);
+            break;
+        }
+    }
+    strncpy(AppStatus.Account, Account.c_str(), sizeof(AppStatus.Account));
+
+    std::vector<std::string> Vec;
+    Utils::Split(ItemVec.at(0), "/", Vec);
+    std::string AppName = Vec.at(Vec.size() - 1);
+    strncpy(AppStatus.AppName, AppName.c_str(), sizeof(AppStatus.AppName));
+    AppStatus.PID = getpid();
+    strncpy(AppStatus.Status, "Start", sizeof(AppStatus.Status));
+
+    char command[512] = {0};
+    std::string AppLogPath;
+    char* p = getenv("APP_LOG_PATH");
+    if(p == NULL)
+    {
+        AppLogPath = "./log/";
+    }
+    else
+    {
+        AppLogPath = p;
+    }
+    sprintf(command, "nohup %s > %s/%s_%s_run.log 2>&1 &", cmd.c_str(), AppLogPath.c_str(), 
+            AppName.c_str(), AppStatus.Account);
+    strncpy(AppStatus.StartScript, command, sizeof(AppStatus.StartScript));
+    std::string SoCommitID;
+    std::string SoUtilsCommitID;
+    m_MarketGateWay->GetCommitID(SoCommitID, SoUtilsCommitID);
+    std::string CommitID = std::string(APP_COMMITID) + ":" + SoCommitID;
+    strncpy(AppStatus.CommitID, CommitID.c_str(), sizeof(AppStatus.CommitID));
+    std::string UtilsCommitID = std::string(UTILS_COMMITID) + ":" + SoUtilsCommitID;
+    strncpy(AppStatus.UtilsCommitID, UtilsCommitID.c_str(), sizeof(AppStatus.UtilsCommitID));
+    std::string APIVersion;
+    m_MarketGateWay->GetAPIVersion(APIVersion);
+    strncpy(AppStatus.APIVersion, APIVersion.c_str(), sizeof(AppStatus.APIVersion));
+    strncpy(AppStatus.StartTime, Utils::getCurrentTimeUs(), sizeof(AppStatus.StartTime));
+    strncpy(AppStatus.LastStartTime, Utils::getCurrentTimeUs(), sizeof(AppStatus.LastStartTime));
+    strncpy(AppStatus.UpdateTime, Utils::getCurrentTimeUs(), sizeof(AppStatus.UpdateTime));
 }

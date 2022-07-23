@@ -11,6 +11,8 @@ class MarketGateWay
 public:
     virtual bool LoadAPIConfig() = 0;
     virtual void Run() = 0;
+    virtual void GetCommitID(std::string& CommitID, std::string& UtilsCommitID) = 0;
+    virtual void GetAPIVersion(std::string& APIVersion) = 0;
 public:
     explicit MarketGateWay()
     {

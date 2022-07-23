@@ -12,6 +12,8 @@ public:
 public:
     virtual bool LoadAPIConfig();
     virtual void Run();
+    virtual void GetCommitID(std::string& CommitID, std::string& UtilsCommitID);
+    virtual void GetAPIVersion(std::string& APIVersion);
 protected:
     MarketData::TFutureMarketData m_MarketData;
 };

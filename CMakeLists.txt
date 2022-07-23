@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 PROJECT(XMarketCenter)
-SET(AppVersion 0.1.0)
+SET(AppVersion 0.2.0)
 SET(XMarketCenter_Version ${PROJECT_NAME}_${AppVersion})
 
 set(CMAKE_CXX_FLAGS "-fPIC")
@@ -13,6 +13,43 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #SET(CMAKE_BUILD_TYPE "Debug")
 SET(CMAKE_BUILD_TYPE "RelWithDebInfo")
 set(CMAKE_CXX_STANDARD 11)
+
+macro(Get_CommitID APP_COMMITID)   
+    find_package(Git QUIET)     # 查找Git，QUIET静默方式不报错
+    if(GIT_FOUND)
+      execute_process(          # 执行一个子进程
+        COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD # 命令
+        OUTPUT_VARIABLE ${APP_COMMITID}        # 输出字符串存入变量
+        OUTPUT_STRIP_TRAILING_WHITESPACE    # 删除字符串尾的换行符
+        ERROR_QUIET                         # 对执行错误静默
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} # 执行路径
+        )
+    endif()
+endmacro() 
+
+macro(Get_UtilsCommitID GIT_UTILSCOMMITID)   
+    find_package(Git QUIET)     # 查找Git，QUIET静默方式不报错
+    if(GIT_FOUND)
+      execute_process(          # 执行一个子进程
+        COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD # 命令
+        OUTPUT_VARIABLE ${GIT_UTILSCOMMITID}        # 输出字符串存入变量
+        OUTPUT_STRIP_TRAILING_WHITESPACE    # 删除字符串尾的换行符
+        ERROR_QUIET                         # 对执行错误静默
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../Utils/ # 执行路径
+        )
+    endif()
+endmacro() 
+
+set(APP_COMMITID "")
+Get_CommitID(APP_COMMITID)
+message(STATUS "AppCommitID is ${APP_COMMITID}")
+
+set(UTILS_COMMITID "")
+Get_UtilsCommitID(UTILS_COMMITID)
+message(STATUS "UtilsCommitID is ${UTILS_COMMITID}")
+
+add_definitions(-DAPP_COMMITID=\"${APP_COMMITID}\")
+add_definitions(-DUTILS_COMMITID=\"${UTILS_COMMITID}\") 
 
 include_directories(${CMAKE_SOURCE_DIR}/)
 include_directories(${CMAKE_SOURCE_DIR}/../Utils/)

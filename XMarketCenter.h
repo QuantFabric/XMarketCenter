@@ -31,6 +31,9 @@ protected:
     void UpdateFutureMarketData(int tick, MarketData::TFutureMarketDataSet &dataset);
     void InitMarketData(int tick, MarketData::TFutureMarketDataSet &dataset);
     void UpdateLastMarketData();
+
+    void InitAppStatus();
+    void UpdateAppStatus(const std::string& cmd, Message::TAppStatus& AppStatus);
 private:
     Utils::MarketCenterConfig m_MarketCenterConfig;
     std::vector<Utils::TickerProperty> m_TickerPropertyVec;
