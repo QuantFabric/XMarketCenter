@@ -1,0 +1,44 @@
+MarketCenterConfig:
+  ServerIP: 127.0.0.1
+  Port: 8001
+  ExchangeID: CFFEX
+  ToMonitor : true
+  Future : true
+  TotalTick: 28801
+  MarketChannelKey: 0XFF000001
+  RecvTimeOut: 60000
+  CallAuctionPeriod: 09:29:00.000
+  ContinuousAuctionPeriod:
+                  - 09:30:00.000-11:30:00.000
+                  - 13:00:00.000-15:00:00.000
+  TickerListPath: /home/xtrader/QuantFabric/XMarketCenter/Config/CFFEXTickerList.yml
+  APIConfig: /home/xtrader/QuantFabric/XMarketCenter/Config/MarketCenter.yml
+
+CTPMarketSource:
+  FrontAddr: tcp://180.168.146.187:10211
+  BrokerID: 9999
+  Account: 188795
+  Password: XXXXXX
+  TickerListPath: /home/xtrader/QuantFabric/XMarketCenter/Config/CFFEXTickerList.yml
+
+REMMarketSource:
+  Account: 3866259
+  Password: 1
+  FrontIP: 183.129.220.106
+  FrontPort: 21006
+  MultiCastIP: 
+  MultiCastPort: 
+  LocalIP: 
+  LocalPort: 
+  TickerListPath: /home/xtrader/QuantFabric/XMarketCenter/Config/CFFEXTickerList.yml
+
+RawMarketSource:
+  Source: CFFEX
+  BinPath: "/home/yyl/"
+  TickerListPath: /home/xtrader/QuantFabric/XMarketCenter/Config/CFFEXTickerList.yml
+  Device: p1p2
+
+CrawlerMarketSource:
+  Source: BondSpot
+  TimeOut: 30000
+  Script: nohup /home/xtrader/anaconda3/envs/python38/bin/python /home/xtrader/Test/StockMarket/StockSpider.py

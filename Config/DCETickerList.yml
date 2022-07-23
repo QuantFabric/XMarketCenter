@@ -1,0 +1,72 @@
+TickerList:                             
+  -
+    TickerIndex: 0
+    Ticker: a2210
+    ExchangeID: DCE
+    PriceTick: 1
+    
+  -
+    TickerIndex: 1
+    Ticker: a2211
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 2
+    Ticker: b2210
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 3
+    Ticker: b2211
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 4
+    Ticker: c2210
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 5
+    Ticker: c2211
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 6
+    Ticker: cs2210
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 7
+    Ticker: cs2211
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 8
+    Ticker: p2210
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 9
+    Ticker: p2211
+    ExchangeID: DCE
+    PriceTick: 1
+
+  -
+    TickerIndex: 10
+    Ticker: m2210
+    ExchangeID: DCE
+    PriceTick: 1
+    
+  -
+    TickerIndex: 11
+    Ticker: m2211
+    ExchangeID: DCE
+    PriceTick: 1
