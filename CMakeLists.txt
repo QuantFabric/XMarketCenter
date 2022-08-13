@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 PROJECT(XMarketCenter)
-SET(AppVersion 0.5.0)
+SET(AppVersion 0.6.0)
 SET(XMarketCenter_Version ${PROJECT_NAME}_${AppVersion})
 
 set(CMAKE_CXX_FLAGS "-fPIC")
@@ -78,5 +78,12 @@ target_link_libraries(${XMarketCenter_Version} yaml-cpp spdlog pthread hpsocket4
 
 # 输出so至build目录
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
+# 输出APP至build目录
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
+# 输出静态库至build目录
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
+
 # 编译API SO
 add_subdirectory(MarketAPI)
+add_subdirectory(Capture)
+
