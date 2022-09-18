@@ -48,6 +48,7 @@ private:
     std::unordered_map<std::string, MarketData::TFutureMarketData> m_LastFutureMarketDataMap;
     std::vector<MarketData::TFutureMarketData> m_MarketDataSetVector;
     int m_LastTick;
+    std::vector<int> m_CPUSETVector;
 };
 
 #endif // MARKETCENTER_H

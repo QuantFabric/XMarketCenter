@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 PROJECT(XMarketCenter)
-SET(AppVersion 0.6.0)
+SET(AppVersion 0.8.0)
 SET(XMarketCenter_Version ${PROJECT_NAME}_${AppVersion})
 
 set(CMAKE_CXX_FLAGS "-fPIC")

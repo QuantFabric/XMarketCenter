@@ -37,6 +37,12 @@ bool XMarketCenter::LoadConfig(const char *yml)
                 m_MarketCenterConfig.APIConfig.c_str(), m_MarketCenterConfig.TickerListPath.c_str(),
                 m_MarketCenterConfig.ToMonitor, m_MarketCenterConfig.Future);
         Utils::gLogger->Log->info(buffer);
+        std::vector<std::string> CPUSETVector;
+        Utils::Split(m_MarketCenterConfig.CPUSET, ",", CPUSETVector);
+        for(int i = 0; i < CPUSETVector.size(); i++)
+        {
+            m_CPUSETVector.push_back(atoi(CPUSETVector.at(i).c_str()));
+        }
     }
     else
     {
@@ -112,15 +118,18 @@ void XMarketCenter::Run()
 
 void XMarketCenter::PullMarketData()
 {
+    bool ret = Utils::ThreadBind(pthread_self(), m_CPUSETVector.at(0));
     if (NULL != m_MarketGateWay)
     {
-        Utils::gLogger->Log->info("XMarketCenter::PullMarketData start thread to pull Market Data.");
+        Utils::gLogger->Log->info("XMarketCenter::PullMarketData start thread to pull Market Data. CPU:{} CPUBind:{}", m_CPUSETVector.at(0), ret);
         m_MarketGateWay->Run();
     }
 }
 
 void XMarketCenter::HandleMarketData()
 {
+    bool ret = Utils::ThreadBind(pthread_self(), m_CPUSETVector.at(1));
+    Utils::gLogger->Log->info("XMarketCenter::HandleMarketData start thread CPU:{} CPUBind:{}", m_CPUSETVector.at(1), ret);
     if(m_MarketCenterConfig.Future)
     {
         Utils::gLogger->Log->info("XMarketCenter::HandleMarketData Future Market Data");

@@ -13,6 +13,7 @@ MarketCenterConfig:
                   - 13:00:00.000-15:00:00.000
   TickerListPath: /home/xtrader/QuantFabric/XMarketCenter/Config/CFFEXTickerList.yml
   APIConfig: /home/xtrader/QuantFabric/XMarketCenter/Config/MarketCenter.yml
+  CPUSET: 11, 12
 
 CTPMarketSource:
   FrontAddr: tcp://180.168.146.187:10211
