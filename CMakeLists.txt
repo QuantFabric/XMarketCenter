@@ -51,37 +51,30 @@ message(STATUS "UtilsCommitID is ${UTILS_COMMITID}")
 add_definitions(-DAPP_COMMITID=\"${APP_COMMITID}\")
 add_definitions(-DUTILS_COMMITID=\"${UTILS_COMMITID}\") 
 
-include_directories(${CMAKE_SOURCE_DIR}/)
-include_directories(${CMAKE_SOURCE_DIR}/../Utils/)
-include_directories(${CMAKE_SOURCE_DIR}/MarketAPI/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Utils/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/MarketAPI/)
 
 # HP-Scoket
-include_directories(${CMAKE_SOURCE_DIR}/../XAPI/HP-Socket/5.8.2/include/)
-link_directories(${CMAKE_SOURCE_DIR}/../XAPI/HP-Socket/5.8.2/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/HP-Socket/5.8.2/include/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/HP-Socket/5.8.2/lib)
 
 # SPDLog
-include_directories(${CMAKE_SOURCE_DIR}/../XAPI/SPDLog/1.8.5/include/)
-link_directories(${CMAKE_SOURCE_DIR}/../XAPI/SPDLog/1.8.5/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/SPDLog/1.8.5/include/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/SPDLog/1.8.5/lib)
 
 # YAML-CPP
-include_directories(${CMAKE_SOURCE_DIR}/../XAPI/YAML-CPP/0.6.3/include/)
-link_directories(${CMAKE_SOURCE_DIR}/../XAPI/YAML-CPP/0.6.3/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/YAML-CPP/0.6.3/include/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/YAML-CPP/0.6.3/lib)
 
 set(SOURCES main.cpp 
             HPPackClient.cpp
             XMarketCenter.cpp 
-            ${CMAKE_SOURCE_DIR}/../Utils/Logger.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/../Utils/Logger.cpp)
 
 add_executable(${XMarketCenter_Version} ${SOURCES})
 
 target_link_libraries(${XMarketCenter_Version} yaml-cpp spdlog pthread hpsocket4c dl)  
-
-# 输出so至build目录
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
-# 输出APP至build目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
-# 输出静态库至build目录
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
 
 # 编译API SO
 add_subdirectory(MarketAPI)

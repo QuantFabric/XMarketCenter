@@ -13,7 +13,7 @@ SET(Capture_Version ${PROJECT_NAME}_${AppVersion})
 SET(CMAKE_BUILD_TYPE "RelWithDebInfo")
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(${CMAKE_SOURCE_DIR}/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
 
 set(SOURCES PacketCaptureTest.cpp)
 add_executable(${Capture_Version} ${SOURCES})

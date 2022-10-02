@@ -53,22 +53,22 @@ add_definitions(-DSO_COMMITID=\"${SO_COMMITID}\")
 add_definitions(-DSO_UTILS_COMMITID=\"${SO_UTILS_COMMITID}\")
 add_definitions(-DAPI_VERSION=\"${APIVersion}\")
 
-include_directories(${CMAKE_SOURCE_DIR}/../Utils/)
-include_directories(${CMAKE_SOURCE_DIR}/MarketAPI/)
-include_directories(${CMAKE_SOURCE_DIR}/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../Utils/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../MarketAPI/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
 # SPDLog
-include_directories(${CMAKE_SOURCE_DIR}/../XAPI/SPDLog/1.8.5/include/)
-link_directories(${CMAKE_SOURCE_DIR}/../XAPI/SPDLog/1.8.5/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/include/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/lib)
 # YAML-CPP
-include_directories(${CMAKE_SOURCE_DIR}/../XAPI/YAML-CPP/0.6.3/include/)
-link_directories(${CMAKE_SOURCE_DIR}/../XAPI/YAML-CPP/0.6.3/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.6.3/include/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.6.3/lib)
 # REM 3.1.3.49
-include_directories(${CMAKE_SOURCE_DIR}/../XAPI/REM/3.1.3.49/include)
-link_directories(${CMAKE_SOURCE_DIR}/../XAPI/REM/3.1.3.49/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/REM/3.1.3.49/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/REM/3.1.3.49/lib)
 
 set(SOURCES REMMarketGateWay.cpp
-            ${CMAKE_SOURCE_DIR}/../Utils/Logger.cpp)
+            ${CMAKE_CURRENT_SOURCE_DIR}/../../../Utils/Logger.cpp)
 add_library(${MarketGateWay_Version} SHARED ${SOURCES})
 
 target_link_libraries(${MarketGateWay_Version} spdlog yaml-cpp EESQuoteApi dl)   
