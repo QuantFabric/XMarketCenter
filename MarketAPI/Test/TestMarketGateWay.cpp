@@ -36,7 +36,7 @@ void TestMarketGateWay::Run()
         Message::PackMessage message;
         message.MessageType = Message::EMessageType::EFutureMarketData;
         memcpy(&message.FutureMarketData, &m_MarketData, sizeof(message.FutureMarketData));
-        bool ret = m_MarketMessageQueue.push(message);
+        while(!m_MarketMessageQueue.Push(message));
         m_Logger->Log->info("TestMarketGateWay::Run Pull Market Data, UpdateTime:{}", Utils::getCurrentTimeUs());
 
         usleep(500*1000);

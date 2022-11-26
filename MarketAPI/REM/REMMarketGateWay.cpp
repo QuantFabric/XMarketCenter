@@ -202,7 +202,7 @@ void REMMarketGateWay::OnQuoteUpdated(EesEqsIntrumentType chInstrumentType, EESM
             memset(&message, 0, sizeof(message));
             message.MessageType = Message::EMessageType::EFutureMarketData;
             memcpy(&message.FutureMarketData, &m_MarketData, sizeof(message.FutureMarketData));
-            m_MarketMessageQueue.push(message);
+            while(!m_MarketMessageQueue.Push(message));
         }
     }
 }

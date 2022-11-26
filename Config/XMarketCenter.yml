@@ -2,6 +2,7 @@ MarketCenterConfig:
   ServerIP: 127.0.0.1
   Port: 8001
   ExchangeID: CFFEX
+  BussinessType: 3
   ToMonitor : true
   Future : true
   TotalTick: 28801

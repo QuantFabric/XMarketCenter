@@ -191,9 +191,9 @@ void CTPMarketGateWay::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDep
         Message::PackMessage message;
         message.MessageType = Message::EMessageType::EFutureMarketData;
         memcpy(&message.FutureMarketData, &m_MarketData, sizeof(message.FutureMarketData));
-        bool ret = m_MarketMessageQueue.push(message);
-        m_Logger->Log->debug("CTPMarketGateWay::OnRtnDepthMarketData Tick:{} Ticker:{} ret={}", 
-                            message.FutureMarketData.Tick, message.FutureMarketData.Ticker, ret);
+        while(!m_MarketMessageQueue.Push(message));
+        m_Logger->Log->debug("CTPMarketGateWay::OnRtnDepthMarketData Tick:{} Ticker:{}", 
+                            message.FutureMarketData.Tick, message.FutureMarketData.Ticker);
     }
 }
 

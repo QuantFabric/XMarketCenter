@@ -2,7 +2,7 @@
 
 bool HPPackClient::m_Connected;
 extern Utils::Logger *gLogger;
-Utils::RingBuffer<Message::PackMessage> HPPackClient::m_MarketMessageQueue;
+Utils::LockFreeQueue<Message::PackMessage> HPPackClient::m_MarketMessageQueue;
 
 HPPackClient::HPPackClient(const char *ip, unsigned int port)
 {
@@ -124,7 +124,7 @@ En_HP_HandleResult __stdcall HPPackClient::OnReceive(HP_Server pSender, HP_CONNI
 {
     Message::PackMessage message;
     memcpy(&message, pData, iLength);
-    m_MarketMessageQueue.push(message);
+    while(!m_MarketMessageQueue.Push(message));
     return HR_OK;
 }
 

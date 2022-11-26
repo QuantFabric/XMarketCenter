@@ -87,7 +87,7 @@ public:
                             message.MessageType = Message::EMessageType::EFutureMarketData;
                             memcpy(&message.FutureMarketData, &m_MarketData, sizeof(message.FutureMarketData));
                             strncpy(message.FutureMarketData.ExchangeID, it->second.ExchangeID.c_str(), sizeof(message.FutureMarketData.ExchangeID));
-                            m_MarketMessageQueue.push(message);
+                            while(!m_MarketMessageQueue.Push(message));
                             TickerSet.insert(Ticker);
                         }
                         m_Logger->Log->debug("PFRingMarketGateWay::Run Ticker:{} Tick:{}", Ticker, m_MarketData.Tick);

@@ -39,7 +39,7 @@ public:
                             message.MessageType = Message::EMessageType::ESpotMarketData;
                             memcpy(&message.FutureMarketData, &data, sizeof(message.FutureMarketData));
                             strncpy(message.FutureMarketData.ExchangeID, it->second.c_str(), sizeof(message.FutureMarketData.ExchangeID));
-                            m_MarketMessageQueue.push(message);
+                            while(!m_MarketMessageQueue.Push(message));
                         }
                     }
                     m_Logger->Log->debug("CrawlerMarketGateWay::Run line:{}", result.at(i));

@@ -130,7 +130,7 @@ void XMarketCenter::HandleMarketData()
 {
     bool ret = Utils::ThreadBind(pthread_self(), m_CPUSETVector.at(1));
     Utils::gLogger->Log->info("XMarketCenter::HandleMarketData start thread CPU:{} CPUBind:{}", m_CPUSETVector.at(1), ret);
-    if(m_MarketCenterConfig.Future)
+    if(m_MarketCenterConfig.BussinessType == Message::EBusinessType::EFUTURE)
     {
         Utils::gLogger->Log->info("XMarketCenter::HandleMarketData Future Market Data");
         Utils::IPCMarketQueue<MarketData::TFutureMarketDataSet> MarketQueue(m_MarketCenterConfig.TotalTick, m_MarketCenterConfig.MarketChannelKey);
@@ -167,7 +167,7 @@ void XMarketCenter::HandleMarketData()
             while (true)
             {
                 Message::PackMessage message;
-                bool ret = m_MarketGateWay->m_MarketMessageQueue.pop(message);
+                bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(message);
                 if (ret)
                 {
                     auto it = m_TickerExchangeMap.find(message.FutureMarketData.Ticker);
@@ -207,12 +207,25 @@ void XMarketCenter::HandleMarketData()
                 {
                     StopRecvTime = Utils::getCurrentTimeUs() + 11;
                     TimeOut = Utils::TimeDiffUs(StartRecvTime, StopRecvTime);
-                    if (TimeOut > m_MarketCenterConfig.RecvTimeOut)
+                    if(TickIndex > 0)
                     {
-                        recvFuturesDone = true;
-                        Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Recv:{}, TimeOut:{}, begin:{}, end:{}, Last Tick:{}",
-                                                       recvCount, TimeOut, StartRecvTime, StopRecvTime, TickIndex);
-                        break;
+                        if (TimeOut > m_MarketCenterConfig.RecvTimeOut)
+                        {
+                            recvFuturesDone = true;
+                            Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Recv:{}, TimeOut:{}, begin:{}, end:{}, Last Tick:{}",
+                                                        recvCount, TimeOut, StartRecvTime, StopRecvTime, TickIndex);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (TimeOut > m_MarketCenterConfig.RecvTimeOut * 10)
+                        {
+                            recvFuturesDone = true;
+                            Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Recv:{}, TimeOut:{}, begin:{}, end:{}, Last Tick:{}",
+                                                        recvCount, TimeOut, StartRecvTime, StopRecvTime, TickIndex);
+                            break;
+                        }
                     }
                 }
                 else
@@ -238,14 +251,17 @@ void XMarketCenter::HandleMarketData()
                 if(TickIndex == SectionLastTick && m_LastTick == SectionLastTick)
                     continue;
                 // Write Market Data to disk
-                m_MarketDataLogger->WriteMarketDataSet(dataset);
+                if(TickIndex > -1)
+                {
+                    m_MarketDataLogger->WriteMarketDataSet(dataset);
+                }
                 m_LastTick = TickIndex;
             }
             // Update Spot Market Data
             while (true)
             {
                 Message::PackMessage message;
-                bool ret = m_PackClient->m_MarketMessageQueue.pop(message);
+                bool ret = m_PackClient->m_MarketMessageQueue.Pop(message);
                 if(ret)
                 {
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Spot Ticker:{}", message.FutureMarketData.Ticker);
@@ -262,7 +278,7 @@ void XMarketCenter::HandleMarketData()
             }
         }
     }
-    else
+    else if(m_MarketCenterConfig.BussinessType == Message::EBusinessType::ESPOT)
     {
         Utils::gLogger->Log->info("XMarketCenter::HandleMarketData Spot Market Data");
         // 现货行情数据处理
@@ -277,7 +293,7 @@ void XMarketCenter::HandleMarketData()
                 prevtimestamp = currenttimestamp;
             }
             Message::PackMessage message;
-            bool ret = m_MarketGateWay->m_MarketMessageQueue.pop(message);
+            bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(message);
             if(ret)
             {
                 // Forward to Monitor
@@ -288,8 +304,12 @@ void XMarketCenter::HandleMarketData()
                 Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Ticker:{} UpdateTime:{}",
                                          message.SpotMarketData.Ticker, message.SpotMarketData.UpdateTime);
             }
-            m_PackClient->m_MarketMessageQueue.pop(message);
+            m_PackClient->m_MarketMessageQueue.Pop(message);
         }
+    }
+    else if(m_MarketCenterConfig.BussinessType == Message::EBusinessType::ESTOCK)
+    {
+
     }
 }
 

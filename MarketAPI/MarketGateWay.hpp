@@ -1,7 +1,7 @@
 #ifndef MARKETGATEWAY_H
 #define MARKETGATEWAY_H
 
-#include "RingBuffer.hpp"
+#include "LockFreeQueue.hpp"
 #include "PackMessage.hpp"
 #include "YMLConfig.hpp"
 #include "Logger.h"
@@ -14,7 +14,7 @@ public:
     virtual void GetCommitID(std::string& CommitID, std::string& UtilsCommitID) = 0;
     virtual void GetAPIVersion(std::string& APIVersion) = 0;
 public:
-    explicit MarketGateWay()
+    explicit MarketGateWay(): m_MarketMessageQueue(1 << 14)
     {
         m_Logger = NULL;
     }
@@ -89,7 +89,7 @@ protected:
         m_Logger->Log->debug("BidVolume5:{}", data.BidVolume5);
     }
 public:
-    Utils::RingBuffer<Message::PackMessage> m_MarketMessageQueue;
+    Utils::LockFreeQueue<Message::PackMessage> m_MarketMessageQueue;
 protected:
     Utils::MarketCenterConfig m_MarketCenterConfig;
     Utils::Logger* m_Logger;

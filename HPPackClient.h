@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include "Logger.h"
 #include "PackMessage.hpp"
-#include "RingBuffer.hpp"
+#include "LockFreeQueue.hpp"
 
 class HPPackClient
 {
@@ -24,7 +24,7 @@ public:
     void SendData(const unsigned char *pBuffer, int iLength);
     virtual ~HPPackClient();
 public:
-    static Utils::RingBuffer<Message::PackMessage> m_MarketMessageQueue;
+    static Utils::LockFreeQueue<Message::PackMessage> m_MarketMessageQueue;
 protected:
     static En_HP_HandleResult __stdcall OnConnect(HP_Client pSender, HP_CONNID dwConnID);
     static En_HP_HandleResult __stdcall OnSend(HP_Server pSender, HP_CONNID dwConnID, const BYTE *pData, int iLength);
