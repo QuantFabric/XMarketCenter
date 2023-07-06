@@ -330,7 +330,10 @@ void XMarketCenter::InitMarketData(int tick, MarketData::TFutureMarketDataSet &d
     for(auto it = m_TickerIndexMap.begin(); it != m_TickerIndexMap.end(); it++)
     {
         int index = it->second;
-        strncpy(dataset.MarketData[index].Ticker, it->first.c_str(), sizeof(dataset.MarketData[index].Ticker));
+        if(index < TICKER_COUNT)
+        {
+            strncpy(dataset.MarketData[index].Ticker, it->first.c_str(), sizeof(dataset.MarketData[index].Ticker));
+        }
     }
 }
 
