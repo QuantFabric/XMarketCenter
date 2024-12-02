@@ -10,7 +10,6 @@
 #include "YMLConfig.hpp"
 #include "Logger.h"
 #include "MarketGateWay.hpp"
-#include "PackMessage.hpp"
 
 class CTPMarketGateWay : public MarketGateWay, public CThostFtdcMdSpi
 {

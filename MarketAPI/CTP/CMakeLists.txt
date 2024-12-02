@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "-fPIC")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 SET(AppVersion 0.2.0)
-SET(MarketGateWay_Version ${PROJECT_NAME}_${AppVersion})
+SET(MarketGateWay_Version ${PROJECT_NAME}_All_${AppVersion})
 
 # 默认输出debug版
 #SET(CMAKE_BUILD_TYPE "Release")

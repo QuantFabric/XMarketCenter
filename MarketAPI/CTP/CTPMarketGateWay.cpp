@@ -91,27 +91,59 @@ void CTPMarketGateWay::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin
         m_Logger->Log->info("CTPMarketGateWay::OnRspUserLogin ApiVersion:{}", m_pMdUserApi->GetApiVersion());
 
         // 读取合约配置
-        int instrumentNum = m_TickerExchangeMap.size();
-        char *instruments[instrumentNum];
-        int i = 0;
-        for (auto it = m_TickerExchangeMap.begin(); it != m_TickerExchangeMap.end(); ++it)
+        int total_count = m_TickerPropertyList.size();
+        int batch_size = 50;
+        int n = total_count / batch_size;
+        int mod = total_count % batch_size;
+        if(n == 0)
         {
-            instruments[i] = new char[32];
-            memset(instruments[i], 0, 32);
-            strncpy(instruments[i], it->first.c_str(), 32);
-            i++;
+            batch_size = mod;
         }
-        // 开始订阅行情
-        int rt = m_pMdUserApi->SubscribeMarketData(instruments, instrumentNum);
-        if (!rt)
-            m_Logger->Log->info("CTPMarketGateWay::SubscribeMarketData 发送订阅行情请求成功");
-        else
-            m_Logger->Log->warn("CTPMarketGateWay::SubscribeMarketData 发送订阅行情请求失败");
-
-        for (size_t i = 0; i < instrumentNum; i++)
+        int i = 0;
+        for(; i < n; i++)
         {
-            delete[] instruments[i];
-            instruments[i] = NULL;
+            char* instruments[batch_size];
+            for(int j = 0; j < batch_size; j++)
+            {
+                instruments[j] = new char[32];
+                memset(instruments[j], 0, 32);
+                strncpy(instruments[j], m_TickerPropertyList[i * batch_size + j].Ticker.c_str(), 32);
+            }
+            // 开始订阅行情
+            int rt = m_pMdUserApi->SubscribeMarketData(instruments, batch_size);
+            if (!rt)
+                m_Logger->Log->info("CTPMarketGateWay::SubscribeMarketData 第{}批次{}个合约发送订阅行情请求成功", i, batch_size);
+            else
+                m_Logger->Log->warn("CTPMarketGateWay::SubscribeMarketData 第{}批次{}个合约发送订阅行情请求失败", i, batch_size);
+
+            for (size_t j = 0; j < batch_size; j++)
+            {
+                delete[] instruments[j];
+                instruments[j] = NULL;
+            }
+        }
+        if(mod > 0)
+        {
+            batch_size = mod;
+            char* instruments[batch_size];
+            for(int j = 0; j < batch_size; j++)
+            {
+                instruments[j] = new char[32];
+                memset(instruments[j], 0, 32);
+                strncpy(instruments[j], m_TickerPropertyList[i * batch_size + j].Ticker.c_str(), 32);
+            }
+            // 开始订阅行情
+            int rt = m_pMdUserApi->SubscribeMarketData(instruments, batch_size);
+            if (!rt)
+                m_Logger->Log->info("CTPMarketGateWay::SubscribeMarketData 第{}批次{}个合约发送订阅行情请求成功", i, batch_size);
+            else
+                m_Logger->Log->warn("CTPMarketGateWay::SubscribeMarketData 第{}批次{}个合约发送订阅行情请求失败", i, batch_size);
+
+            for (size_t j = 0; j < batch_size; j++)
+            {
+                delete[] instruments[j];
+                instruments[j] = NULL;
+            }
         }
     }
     else
@@ -176,24 +208,19 @@ void CTPMarketGateWay::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDep
     // print Market Data for Debug
     // PrintDepthMarketData(pDepthMarketData);
     // 处理订阅合约行情数据
-    std::string recvTime = Utils::getCurrentTimeUs();
     auto it = m_TickerExchangeMap.find(pDepthMarketData->InstrumentID);
     if (it != m_TickerExchangeMap.end())
     {
         memset(&m_MarketData, 0, sizeof(m_MarketData));
-        memcpy(m_MarketData.RevDataLocalTime, recvTime.c_str(), sizeof(m_MarketData.RevDataLocalTime));
         strncpy(m_MarketData.ExchangeID, it->second.c_str(), sizeof(m_MarketData.ExchangeID));
         ParseMarketData(*pDepthMarketData, m_MarketData);
-        std::string datetime= Utils::getCurrentDay();
-        datetime = datetime + " " + m_MarketData.UpdateTime;
-        memcpy(m_MarketData.UpdateTime, datetime.c_str(), sizeof(m_MarketData.UpdateTime));
         // 写入行情数据到行情队列
         Message::PackMessage message;
         message.MessageType = Message::EMessageType::EFutureMarketData;
         memcpy(&message.FutureMarketData, &m_MarketData, sizeof(message.FutureMarketData));
         while(!m_MarketMessageQueue.Push(message));
-        m_Logger->Log->debug("CTPMarketGateWay::OnRtnDepthMarketData Tick:{} Ticker:{}", 
-                            message.FutureMarketData.Tick, message.FutureMarketData.Ticker);
+        m_Logger->Log->debug("CTPMarketGateWay::OnRtnDepthMarketData Ticker:{} UpdateTime:{}", 
+                            message.FutureMarketData.Ticker, message.FutureMarketData.UpdateTime);
     }
 }
 
@@ -201,6 +228,8 @@ void CTPMarketGateWay::ParseMarketData(const CThostFtdcDepthMarketDataField& dep
 {
     // numeric_limits<double>::max()
     strncpy(tickData.Ticker, depthMarketData.InstrumentID, sizeof(tickData.Ticker));
+    strncpy(tickData.TradingDay, depthMarketData.TradingDay, sizeof(tickData.TradingDay));
+    strncpy(tickData.ActionDay, depthMarketData.ActionDay, sizeof(tickData.ActionDay));
     strncpy(tickData.UpdateTime, depthMarketData.UpdateTime, sizeof(tickData.UpdateTime));
     tickData.MillSec = depthMarketData.UpdateMillisec;
     tickData.LastPrice = depthMarketData.LastPrice;

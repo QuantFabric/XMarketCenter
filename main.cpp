@@ -67,7 +67,6 @@ int main(int argc, char *argv[])
     // start Market Center
     XMarketCenter engine;
     engine.LoadConfig(configPath.c_str());
-    engine.SetCommand(cmd);
     engine.LoadMarketGateWay(soPath);
     engine.Run();
 
