@@ -60,7 +60,7 @@ bool XueQiuMarketGateWay::ParseMarketData(const std::vector<std::string> &market
         data.HighestPrice = atof(market.at(4).c_str());
         data.LowestPrice = atof(market.at(5).c_str());
         strncpy(data.UpdateTime, market.at(6).c_str(), sizeof(data.UpdateTime));
-        strncpy(data.RevDataLocalTime, Utils::getCurrentTimeUs(), sizeof(data.RevDataLocalTime));
+        strncpy(data.RecvLocalTime, Utils::getCurrentTimeUs(), sizeof(data.RecvLocalTime));
     }
     else
     {

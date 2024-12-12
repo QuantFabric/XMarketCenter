@@ -6,7 +6,7 @@ MarketCenterConfig:
   ToMonitor : true
   Future : true
   TotalTick: 28801
-  MarketChannelKey: 0XFF000001
+  MarketServer: PubServer
   RecvTimeOut: 60000
   CallAuctionPeriod: 09:29:00.000
   ContinuousAuctionPeriod:
@@ -14,7 +14,6 @@ MarketCenterConfig:
                   - 13:00:00.000-15:00:00.000
   TickerListPath: /home/xtrader/QuantFabric/XMarketCenter/Config/CFFEXTickerList.yml
   APIConfig: /home/xtrader/QuantFabric/XMarketCenter/Config/MarketCenter.yml
-  CPUSET: 11, 12
 
 CTPMarketSource:
   FrontAddr: tcp://180.168.146.187:10211

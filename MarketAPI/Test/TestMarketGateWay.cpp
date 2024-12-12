@@ -30,7 +30,7 @@ void TestMarketGateWay::Run()
         memset(&m_MarketData, 0, sizeof(m_MarketData));
         m_MarketData.Tick = Tick++;
         strncpy(m_MarketData.Ticker, "IF2209", sizeof(m_MarketData.Ticker));
-        memcpy(m_MarketData.RevDataLocalTime, Utils::getCurrentTimeUs(), sizeof(m_MarketData.RevDataLocalTime));
+        memcpy(m_MarketData.RecvLocalTime, Utils::getCurrentTimeUs(), sizeof(m_MarketData.RecvLocalTime));
         strncpy(m_MarketData.ExchangeID, "CFFEX", sizeof(m_MarketData.ExchangeID));
         // 写入行情数据到行情队列
         Message::PackMessage message;

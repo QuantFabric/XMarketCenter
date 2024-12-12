@@ -42,7 +42,7 @@ public:
             {
                 m_TickerExchangeMap[it->Ticker] = it->ExchangeID;
                 m_TickerPropertyMap[it->Ticker] = *it;
-                m_Logger->Log->info("MarketGateWay::LoadTickerList Ticker:{}", it->Ticker);
+                // m_Logger->Log->info("MarketGateWay::LoadTickerList Ticker:{}", it->Ticker);
             }
         }
         else

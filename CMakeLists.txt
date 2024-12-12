@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 PROJECT(XMarketCenter)
-SET(AppVersion 0.8.0)
+SET(AppVersion 0.9.0)
 SET(XMarketCenter_Version ${PROJECT_NAME}_${AppVersion})
 
 set(CMAKE_CXX_FLAGS "-fPIC")
@@ -10,9 +10,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # 默认输出debug版
 #SET(CMAKE_BUILD_TYPE "Release")
-#SET(CMAKE_BUILD_TYPE "Debug")
-SET(CMAKE_BUILD_TYPE "RelWithDebInfo")
-set(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_BUILD_TYPE "Debug")
+#SET(CMAKE_BUILD_TYPE "RelWithDebInfo")
+set(CMAKE_CXX_STANDARD 17)
 
 macro(Get_CommitID APP_COMMITID)   
     find_package(Git QUIET)     # 查找Git，QUIET静默方式不报错
@@ -67,16 +67,21 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/SPDLog/1.8.5/lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/YAML-CPP/0.8.0/include/)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/YAML-CPP/0.8.0/lib)
 
+# SHMServer
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../SHMServer/)
+
 set(SOURCES main.cpp 
             HPPackClient.cpp
             XMarketCenter.cpp 
+            PubServer.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/../Utils/Logger.cpp)
 
 add_executable(${XMarketCenter_Version} ${SOURCES})
 
-target_link_libraries(${XMarketCenter_Version} yaml-cpp spdlog pthread hpsocket4c dl)  
+target_link_libraries(${XMarketCenter_Version} yaml-cpp spdlog pthread hpsocket4c dl rt)  
 
 # 编译API SO
 add_subdirectory(MarketAPI)
 add_subdirectory(Capture)
+add_subdirectory(MarketReader)
 
