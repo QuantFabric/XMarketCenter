@@ -134,6 +134,7 @@ void XMarketCenter::HandleMarketData()
                 bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg.Data);
                 if(ret)
                 {
+                    MarketData::Check(msg.Data.FutureMarketData);
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Future Ticker:{}", msg.Data.FutureMarketData.Ticker);
                     if(!m_PubServer->m_SendQueue.Push(msg))
                     {
