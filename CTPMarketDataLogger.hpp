@@ -29,23 +29,29 @@ public:
 protected:
     void WriteMarketDataFile(const MarketData::TFutureMarketData &data)
     {
-        m_DataLogger->info("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}",
+        m_DataLogger->info("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}",
             data.Ticker,
             data.ExchangeID,
             data.ActionDay,
             data.UpdateTime,
             data.MillSec,
             data.LastPrice,
-            data.PreSettlementPrice,
-            data.PreClosePrice,
             data.Volume,
             data.Turnover,
-            data.OpenInterest,
             data.OpenPrice,
+            data.ClosePrice,
+            data.PreClosePrice,
+            data.SettlementPrice,
+            data.PreSettlementPrice,
+            data.OpenInterest,
+            data.PreOpenInterest,
+            data.CurrDelta,
+            data.PreDelta,
             data.HighestPrice,
             data.LowestPrice,
             data.UpperLimitPrice,
             data.LowerLimitPrice,
+            data.AveragePrice,
             data.BidPrice1,
             data.BidVolume1,
             data.AskPrice1,
@@ -77,16 +83,22 @@ protected:
             "UpdateTime" + delimiter +
             "MillSec" + delimiter +
             "LastPrice" + delimiter +
-            "PreSettlementPrice" + delimiter +
-            "PreClosePrice" + delimiter +
             "Volume" + delimiter +
             "Turnover" + delimiter +
-            "OpenInterest" + delimiter +
             "OpenPrice" + delimiter +
+            "ClosePrice" + delimiter +
+            "PreClosePrice" + delimiter +
+            "SettlementPrice" + delimiter +
+            "PreSettlementPrice" + delimiter +
+            "OpenInterest" + delimiter +
+            "PreOpenInterest" + delimiter +
+            "CurrDelta" + delimiter +
+            "PreDelta" + delimiter +
             "HighestPrice" + delimiter +
             "LowestPrice" + delimiter +
             "UpperLimitPrice" + delimiter +
             "LowerLimitPrice" + delimiter +
+            "AveragePrice" + delimiter +
             "BidPrice1" + delimiter +
             "BidVolume1" + delimiter +
             "AskPrice1" + delimiter +
@@ -114,16 +126,14 @@ protected:
     {
         std::string data_log_path = getenv("DATA_LOG_PATH");
         std::string log_name = data_log_path + "/" + ExchangeID + "_" + tradingday + ".csv";
+        // auto logger = spdlog::basic_logger_mt(ExchangeID, log_name);
+        // logger->set_pattern("%v");
+
+        spdlog::init_thread_pool(1024 * 10, 1);
         auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_name);
         file_sink->set_pattern("%v");
-        auto logger = std::make_shared<spdlog::logger>(ExchangeID, file_sink);
-        // 文件已经存在，不需要写header
-        if(0 != access(log_name.c_str(), F_OK))
-        {
-            std::string marketHeader;
-            FormatMarketDataHeader(",", marketHeader);
-            logger->info(marketHeader); 
-        }
+        auto logger = std::make_shared<spdlog::async_logger>(ExchangeID, file_sink, spdlog::thread_pool(), spdlog::async_overflow_policy::overrun_oldest);
+        spdlog::register_logger(logger);
         m_DataLogger = logger;
     }
 

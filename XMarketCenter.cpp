@@ -29,11 +29,11 @@ bool XMarketCenter::LoadConfig(const char *yml)
     {
         Utils::gLogger->Log->info("XMarketCenter::LoadConfig {} successed", yml);
         char buffer[512] = {0};
-        sprintf(buffer, "MarketCenter::LoadConfig ExchangeID:%s ServerIP:%s Port:%d TotalTick:%d MarketChannelKey:0X%X "
+        sprintf(buffer, "MarketCenter::LoadConfig ExchangeID:%s ServerIP:%s Port:%d TotalTick:%d MarketServer:%s "
                 "RecvTimeOut:%d APIConfig:%s TickerListPath:%s ToMonitor:%d Future:%d",
                 m_MarketCenterConfig.ExchangeID.c_str(), m_MarketCenterConfig.ServerIP.c_str(), 
                 m_MarketCenterConfig.Port, m_MarketCenterConfig.TotalTick,
-                m_MarketCenterConfig.MarketChannelKey, m_MarketCenterConfig.RecvTimeOut, 
+                m_MarketCenterConfig.MarketServer.c_str(), m_MarketCenterConfig.RecvTimeOut, 
                 m_MarketCenterConfig.APIConfig.c_str(), m_MarketCenterConfig.TickerListPath.c_str(),
                 m_MarketCenterConfig.ToMonitor, m_MarketCenterConfig.Future);
         Utils::gLogger->Log->info(buffer);
@@ -104,6 +104,7 @@ void XMarketCenter::HandleMarketData()
         bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(message);
         if(ret)
         {
+            Check(message.FutureMarketData);
             m_CTPMarketDataLogger->WriteFutureMarketData(message.FutureMarketData);
             Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Ticker:{} UpdateTime:{}",
                                         message.FutureMarketData.Ticker, message.FutureMarketData.UpdateTime);

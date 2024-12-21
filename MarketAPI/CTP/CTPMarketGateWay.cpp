@@ -235,14 +235,22 @@ void CTPMarketGateWay::ParseMarketData(const CThostFtdcDepthMarketDataField& dep
     tickData.LastPrice = depthMarketData.LastPrice;
     tickData.Volume = depthMarketData.Volume;
     tickData.Turnover = depthMarketData.Turnover;
-    tickData.PreSettlementPrice = depthMarketData.PreSettlementPrice;
-    tickData.PreClosePrice = depthMarketData.PreClosePrice;
-    tickData.OpenInterest = depthMarketData.OpenInterest;
     tickData.OpenPrice = depthMarketData.OpenPrice;
+    tickData.ClosePrice = depthMarketData.ClosePrice;
+    tickData.PreClosePrice = depthMarketData.PreClosePrice;
+    tickData.SettlementPrice = depthMarketData.SettlementPrice;
+    tickData.PreSettlementPrice = depthMarketData.PreSettlementPrice;
+    tickData.OpenInterest = depthMarketData.OpenInterest;
+    tickData.PreOpenInterest = depthMarketData.PreOpenInterest;
+    tickData.CurrDelta = depthMarketData.CurrDelta;
+    tickData.PreDelta = depthMarketData.PreDelta;
+    
     tickData.HighestPrice = depthMarketData.HighestPrice;
     tickData.LowestPrice = depthMarketData.LowestPrice;
     tickData.UpperLimitPrice = depthMarketData.UpperLimitPrice;
     tickData.LowerLimitPrice = depthMarketData.LowerLimitPrice;
+
+    tickData.AveragePrice = depthMarketData.AveragePrice;
 
     tickData.BidPrice1 = depthMarketData.BidPrice1;
     tickData.BidVolume1 = depthMarketData.BidVolume1;
