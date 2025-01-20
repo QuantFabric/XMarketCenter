@@ -40,7 +40,7 @@ private:
     MarketGateWay* m_MarketGateWay;
     std::thread* m_pHandleThread;
     std::thread* m_pPullThread;
-    SHMIPC::ChannelMsg<Message::PackMessage> m_Msg;
+    SHMIPC::TChannelMsg<Message::PackMessage> m_Msg;
 };
 
 #endif // MARKETCENTER_H

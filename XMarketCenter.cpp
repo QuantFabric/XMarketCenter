@@ -106,6 +106,7 @@ void XMarketCenter::Run()
     m_pPullThread = new std::thread(&XMarketCenter::PullMarketData, this);
     m_pHandleThread = new std::thread(&XMarketCenter::HandleMarketData, this);
     
+    m_PubServer->Join();
     m_pPullThread->join();
     m_pHandleThread->join();
 }
@@ -122,8 +123,8 @@ void XMarketCenter::PullMarketData()
 void XMarketCenter::HandleMarketData()
 {
     Utils::gLogger->Log->info("XMarketCenter::HandleMarketData start thread");
-    SHMIPC::ChannelMsg<Message::PackMessage> msg;
-    if(m_MarketCenterConfig.BussinessType == Message::EBusinessType::EFUTURE)
+    Message::PackMessage msg;
+    if(m_MarketCenterConfig.BusinessType == Message::EBusinessType::EFUTURE)
     {
         Utils::gLogger->Log->info("XMarketCenter::HandleMarketData Future Market Data");
         while (true)
@@ -131,20 +132,20 @@ void XMarketCenter::HandleMarketData()
             // receive data from queue to update last data
             while (true)
             {
-                bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg.Data);
+                bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg);
                 if(ret)
                 {
-                    MarketData::Check(msg.Data.FutureMarketData);
-                    Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Future Ticker:{}", msg.Data.FutureMarketData.Ticker);
-                    if(!m_PubServer->m_SendQueue.Push(msg))
+                    MarketData::Check(msg.FutureMarketData);
+                    Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Future Ticker:{}", msg.FutureMarketData.Ticker);
+                    if(!m_PubServer->Push(msg))
                     {
                         Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Future Data failed, Ticker:{} PubServer m_SendQueue full", 
-                                                msg.Data.FutureMarketData.Ticker);
+                                                msg.FutureMarketData.Ticker);
                     }
                     // Forward to Monitor
                     if(m_MarketCenterConfig.ToMonitor)
                     {
-                        m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg.Data), sizeof(msg.Data));
+                        m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg), sizeof(msg));
                     }
                 }
                 else
@@ -163,14 +164,14 @@ void XMarketCenter::HandleMarketData()
             // Update Spot Market Data
             while (true)
             {
-                bool ret = m_PackClient->m_MarketMessageQueue.Pop(msg.Data);
+                bool ret = m_PackClient->m_MarketMessageQueue.Pop(msg);
                 if(ret)
                 {
-                    Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Spot Ticker:{}", msg.Data.FutureMarketData.Ticker);
-                    if(!m_PubServer->m_SendQueue.Push(msg))
+                    Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Spot Ticker:{}", msg.FutureMarketData.Ticker);
+                    if(!m_PubServer->Push(msg))
                     {
                         Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Spot Data failed, Ticker:{} PubServer m_SendQueue full", 
-                                                msg.Data.FutureMarketData.Ticker);
+                                                msg.FutureMarketData.Ticker);
                     }
                 }
                 else
@@ -180,7 +181,7 @@ void XMarketCenter::HandleMarketData()
             }
         }
     }
-    else if(m_MarketCenterConfig.BussinessType == Message::EBusinessType::ESPOT)
+    else if(m_MarketCenterConfig.BusinessType == Message::EBusinessType::ESPOT)
     {
         Utils::gLogger->Log->info("XMarketCenter::HandleMarketData Spot Market Data");
         // 现货行情数据处理
@@ -194,40 +195,40 @@ void XMarketCenter::HandleMarketData()
                 m_PackClient->ReConnect();
                 prevtimestamp = currenttimestamp;
             }
-            bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg.Data);
+            bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg);
             if(ret)
             {
                 // Forward to Monitor
                 if(m_MarketCenterConfig.ToMonitor)
                 {
-                    m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg.Data), sizeof(msg.Data));
+                    m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg), sizeof(msg));
                 }
                 Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Ticker:{} UpdateTime:{}",
-                                         msg.Data.SpotMarketData.Ticker, msg.Data.SpotMarketData.UpdateTime);
+                                         msg.SpotMarketData.Ticker, msg.SpotMarketData.UpdateTime);
             }
-            m_PackClient->m_MarketMessageQueue.Pop(msg.Data);
+            m_PackClient->m_MarketMessageQueue.Pop(msg);
         }
     }
-    else if(m_MarketCenterConfig.BussinessType == Message::EBusinessType::ESTOCK)
+    else if(m_MarketCenterConfig.BusinessType == Message::EBusinessType::ESTOCK)
     {
         while(true)
         {
             // receive data from queue to update last data
             while (true)
             {
-                bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg.Data);
+                bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg);
                 if(ret)
                 {
-                    Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Stock Ticker:{}", msg.Data.StockMarketData.Ticker);
-                    if(!m_PubServer->m_SendQueue.Push(msg))
+                    Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Stock Ticker:{}", msg.StockMarketData.Ticker);
+                    if(!m_PubServer->Push(msg))
                     {
                         Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Stock Data failed, Ticker:{} PubServer m_SendQueue full", 
-                                                msg.Data.StockMarketData.Ticker);
+                                                msg.StockMarketData.Ticker);
                     }
                     // Forward to Monitor
                     if(m_MarketCenterConfig.ToMonitor)
                     {
-                        m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg.Data), sizeof(msg.Data));
+                        m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg), sizeof(msg));
                     }
                 }
                 else

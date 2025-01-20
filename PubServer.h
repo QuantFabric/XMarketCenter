@@ -6,6 +6,7 @@
 struct ServerConf : public SHMIPC::CommonConf
 {
     static const bool Publish = true;
+    static const bool Performance = true;
 };
 
 class PubServer: public SHMIPC::SHMServer<Message::PackMessage, ServerConf>

@@ -5,10 +5,15 @@
 #include <vector>
 #include <string>
 #include <thread>
+#include <stdio.h>
 #include "Common.hpp"
 #include "SHMConnection.hpp"
 #include "PackMessage.hpp"
 
+struct ClientConf : public SHMIPC::CommonConf
+{
+    static const bool Performance = true;
+};
 
 int main(int argc, char** argv) 
 {
@@ -18,7 +23,7 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    SHMIPC::SHMConnection<Message::PackMessage, SHMIPC::CommonConf> client(argv[1]);
+    SHMIPC::SHMConnection<Message::PackMessage, ClientConf> client(argv[1]);
     client.Start(argv[2]);
     Message::PackMessage recvMsg;
     static uint64_t i = 0;
