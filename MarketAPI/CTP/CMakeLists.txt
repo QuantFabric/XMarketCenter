@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 PROJECT(CTPMarket)
 
 set(CMAKE_CXX_FLAGS "-fPIC")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-SET(AppVersion 0.2.0)
+SET(AppVersion 0.5.0)
 SET(MarketGateWay_Version ${PROJECT_NAME}_${AppVersion})
 
 # 默认输出debug版
@@ -64,9 +64,9 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.6.3/include/)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.6.3/lib)
 
-# CTP 6.5.1
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.5.1/include)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.5.1/lib)
+# CTP 6.7.8
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.8/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.8/lib)
 
 set(SOURCES CTPMarketGateWay.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/../../../Utils/Logger.cpp)
