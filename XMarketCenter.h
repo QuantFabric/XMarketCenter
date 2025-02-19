@@ -11,7 +11,7 @@
 #include "MarketData.hpp"
 #include "MarketAPI/MarketGateWay.hpp"
 #include "HPPackClient.h"
-#include "PubServer.h"
+#include "PubServer.hpp"
 
 class XMarketCenter
 {

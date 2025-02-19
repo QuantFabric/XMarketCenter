@@ -6,7 +6,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/)
 
-SET(AppVersion 0.9.0)
+SET(AppVersion 0.9.3)
 SET(XMarketCenter_Version ${PROJECT_NAME}_${AppVersion})
 
 set(CMAKE_CXX_FLAGS "-fPIC")
@@ -32,6 +32,19 @@ macro(Get_CommitID APP_COMMITID)
     endif()
 endmacro() 
 
+macro(Get_SHMServerCommitID GIT_SHMSERVERCOMMITID)
+    find_package(Git QUIET)     # 查找Git，QUIET静默方式不报错
+    if(GIT_FOUND)
+      execute_process(          # 执行一个子进程
+        COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD # 命令
+        OUTPUT_VARIABLE ${GIT_SHMSERVERCOMMITID}        # 输出字符串存入变量
+        OUTPUT_STRIP_TRAILING_WHITESPACE    # 删除字符串尾的换行符
+        ERROR_QUIET                         # 对执行错误静默
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../SHMServer/ # 执行路径
+        )
+    endif()
+endmacro()
+
 macro(Get_UtilsCommitID GIT_UTILSCOMMITID)   
     find_package(Git QUIET)     # 查找Git，QUIET静默方式不报错
     if(GIT_FOUND)
@@ -49,11 +62,16 @@ set(APP_COMMITID "")
 Get_CommitID(APP_COMMITID)
 message(STATUS "AppCommitID is ${APP_COMMITID}")
 
+set(SHMSERVER_COMMITID "")
+Get_SHMServerCommitID(SHMSERVER_COMMITID)
+message(STATUS "SHMServerCommitID is ${SHMSERVER_COMMITID}")
+
 set(UTILS_COMMITID "")
 Get_UtilsCommitID(UTILS_COMMITID)
 message(STATUS "UtilsCommitID is ${UTILS_COMMITID}")
 
 add_definitions(-DAPP_COMMITID=\"${APP_COMMITID}\")
+add_definitions(-DSHMSERVER_COMMITID=\"${SHMSERVER_COMMITID}\")
 add_definitions(-DUTILS_COMMITID=\"${UTILS_COMMITID}\") 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
@@ -78,7 +96,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../SHMServer/)
 set(SOURCES main.cpp 
             HPPackClient.cpp
             XMarketCenter.cpp 
-            PubServer.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/../Utils/Logger.cpp)
 
 add_executable(${XMarketCenter_Version} ${SOURCES})

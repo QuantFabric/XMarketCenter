@@ -296,7 +296,7 @@ void XMarketCenter::UpdateAppStatus(const std::string& cmd, Message::TAppStatus&
     std::string SoCommitID;
     std::string SoUtilsCommitID;
     m_MarketGateWay->GetCommitID(SoCommitID, SoUtilsCommitID);
-    std::string CommitID = std::string(APP_COMMITID) + ":" + SoCommitID;
+    std::string CommitID = std::string(APP_COMMITID) + ":" + SoCommitID + ":" + SHMSERVER_COMMITID;
     strncpy(AppStatus.CommitID, CommitID.c_str(), sizeof(AppStatus.CommitID));
     std::string UtilsCommitID = std::string(UTILS_COMMITID) + ":" + SoUtilsCommitID;
     strncpy(AppStatus.UtilsCommitID, UtilsCommitID.c_str(), sizeof(AppStatus.UtilsCommitID));
