@@ -95,6 +95,16 @@ void XMarketCenter::Run()
     sleep(1);
     m_PackClient->Login(m_MarketCenterConfig.ExchangeID.c_str());
     sleep(1);
+    Message::PackMessage message;
+    memset(&message, 0, sizeof(message));
+    message.MessageType = Message::EMessageType::EEventLog;
+    message.EventLog.Level = Message::EEventLogLevel::EINFO;
+    strncpy(message.EventLog.App, "XMarketCenter", sizeof(message.EventLog.App));
+    fmt::format_to_n(message.EventLog.Event, sizeof(message.EventLog.Event), 
+                    "XMarketCenter {} Start, MarketServer:{}", 
+                    m_MarketCenterConfig.ExchangeID, m_MarketCenterConfig.MarketServer);
+    strncpy(message.EventLog.UpdateTime, Utils::getCurrentTimeUs(), sizeof(message.EventLog.UpdateTime));
+    m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&message), sizeof(message));
 
     // Update App Status
     InitAppStatus();

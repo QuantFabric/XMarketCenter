@@ -12,6 +12,7 @@
 
 struct ClientConf : public SHMIPC::CommonConf
 {
+    static const bool Publish = true;
     static const bool Performance = true;
 };
 
