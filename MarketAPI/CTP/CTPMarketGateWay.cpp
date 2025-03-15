@@ -216,9 +216,6 @@ void CTPMarketGateWay::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDep
         memcpy(m_MarketData.RecvLocalTime, recvTime.c_str(), sizeof(m_MarketData.RecvLocalTime));
         strncpy(m_MarketData.ExchangeID, it->second.c_str(), sizeof(m_MarketData.ExchangeID));
         ParseMarketData(*pDepthMarketData, m_MarketData);
-        std::string datetime= Utils::getCurrentDay();
-        datetime = datetime + " " + m_MarketData.UpdateTime;
-        memcpy(m_MarketData.UpdateTime, datetime.c_str(), sizeof(m_MarketData.UpdateTime));
         // 写入行情数据到行情队列
         Message::PackMessage message;
         message.MessageType = Message::EMessageType::EFutureMarketData;
@@ -233,6 +230,8 @@ void CTPMarketGateWay::ParseMarketData(const CThostFtdcDepthMarketDataField& dep
 {
     // numeric_limits<double>::max()
     strncpy(tickData.Ticker, depthMarketData.InstrumentID, sizeof(tickData.Ticker));
+    strncpy(tickData.TradingDay, depthMarketData.TradingDay, sizeof(tickData.TradingDay));
+    strncpy(tickData.ActionDay, depthMarketData.ActionDay, sizeof(tickData.ActionDay));
     strncpy(tickData.UpdateTime, depthMarketData.UpdateTime, sizeof(tickData.UpdateTime));
     tickData.MillSec = depthMarketData.UpdateMillisec;
     tickData.LastPrice = depthMarketData.LastPrice;

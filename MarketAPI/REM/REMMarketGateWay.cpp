@@ -78,6 +78,8 @@ void REMMarketGateWay::GetAPIVersion(std::string& APIVersion)
 void REMMarketGateWay::ParseMarketData(const EESMarketDepthQuoteData& DepthQuoteData, MarketData::TFutureMarketData& tickData)
 {
     strncpy(tickData.Ticker, DepthQuoteData.InstrumentID, sizeof(tickData.Ticker));
+    strncpy(tickData.TradingDay, DepthQuoteData.TradingDay, sizeof(tickData.TradingDay));
+    strncpy(tickData.ActionDay, Utils::getCurrentDay(), sizeof(tickData.ActionDay));
     strncpy(tickData.UpdateTime, DepthQuoteData.UpdateTime, sizeof(tickData.UpdateTime));
     strncpy(tickData.ExchangeID, DepthQuoteData.ExchangeID, sizeof(tickData.ExchangeID));
     tickData.MillSec = DepthQuoteData.UpdateMillisec;
