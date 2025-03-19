@@ -147,7 +147,11 @@ void XMarketCenter::HandleMarketData()
                 {
                     MarketData::Check(msg.FutureMarketData);
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Future Ticker:{}", msg.FutureMarketData.Ticker);
-                    if(!m_PubServer->Push(msg))
+                    if(m_PubServer->Push(msg))
+                    {
+                        m_PubServer->PollMsg();
+                    }
+                    else
                     {
                         Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Future Data failed, Ticker:{} PubServer m_SendQueue full", 
                                                 msg.FutureMarketData.Ticker);
@@ -160,14 +164,7 @@ void XMarketCenter::HandleMarketData()
                 }
                 else
                 {
-                    // reload PackClient when timeout greater equals to 10s
-                    static unsigned long prevtimestamp = Utils::getTimeMs();
-                    unsigned long currenttimestamp = Utils::getTimeMs();
-                    if(currenttimestamp - prevtimestamp >=  10 * 1000)
-                    {
-                        m_PackClient->ReConnect();
-                        prevtimestamp = currenttimestamp;
-                    }
+                    m_PubServer->PollMsg();
                     break;
                 }
             }
@@ -178,10 +175,14 @@ void XMarketCenter::HandleMarketData()
                 if(ret)
                 {
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Spot Ticker:{}", msg.FutureMarketData.Ticker);
-                    if(!m_PubServer->Push(msg))
+                    if(m_PubServer->Push(msg))
+                    {
+                        m_PubServer->PollMsg();
+                    }
+                    else
                     {
                         Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Spot Data failed, Ticker:{} PubServer m_SendQueue full", 
-                                                msg.FutureMarketData.Ticker);
+                                                    msg.FutureMarketData.Ticker);
                     }
                 }
                 else
@@ -189,6 +190,7 @@ void XMarketCenter::HandleMarketData()
                     break;
                 }
             }
+            
         }
     }
     else if(m_MarketCenterConfig.BusinessType == Message::EBusinessType::ESPOT)
@@ -230,7 +232,11 @@ void XMarketCenter::HandleMarketData()
                 if(ret)
                 {
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Stock Ticker:{}", msg.StockMarketData.Ticker);
-                    if(!m_PubServer->Push(msg))
+                    if(m_PubServer->Push(msg))
+                    {
+                        m_PubServer->PollMsg();
+                    }
+                    else
                     {
                         Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Stock Data failed, Ticker:{} PubServer m_SendQueue full", 
                                                 msg.StockMarketData.Ticker);
@@ -243,14 +249,7 @@ void XMarketCenter::HandleMarketData()
                 }
                 else
                 {
-                    // reload PackClient when timeout greater equals to 10s
-                    static unsigned long prevtimestamp = Utils::getTimeMs();
-                    unsigned long currenttimestamp = Utils::getTimeMs();
-                    if(currenttimestamp - prevtimestamp >=  10 * 1000)
-                    {
-                        m_PackClient->ReConnect();
-                        prevtimestamp = currenttimestamp;
-                    }
+                    m_PubServer->PollMsg();
                     break;
                 }
             }
