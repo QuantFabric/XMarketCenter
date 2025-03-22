@@ -2,6 +2,7 @@
 #define PUBSERVER_HPP
 #include "SHMServer.hpp"
 #include "PackMessage.hpp"
+#include <deque>
 
 struct ServerConf : public SHMIPC::CommonConf
 {
@@ -14,7 +15,6 @@ class PubServer: public SHMIPC::SHMServer<Message::PackMessage, ServerConf>
 public:
     PubServer():SHMServer<Message::PackMessage, ServerConf>()
     {
-
     }
 
     virtual ~PubServer()

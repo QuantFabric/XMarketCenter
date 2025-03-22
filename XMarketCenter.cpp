@@ -123,16 +123,18 @@ void XMarketCenter::Run()
 
 void XMarketCenter::PullMarketData()
 {
+    bool ret = Utils::ThreadBind(pthread_self(), m_MarketCenterConfig.CPUSET.at(0));
     if(NULL != m_MarketGateWay)
     {
-        Utils::gLogger->Log->info("XMarketCenter::PullMarketData start thread to pull Market Data. ");
+        Utils::gLogger->Log->info("XMarketCenter::PullMarketData start thread to pull Market Data. CPU:{} ret:{}", m_MarketCenterConfig.CPUSET.at(0), ret);
         m_MarketGateWay->Run();
     }
 }
 
 void XMarketCenter::HandleMarketData()
 {
-    Utils::gLogger->Log->info("XMarketCenter::HandleMarketData start thread");
+    bool ret = Utils::ThreadBind(pthread_self(), m_MarketCenterConfig.CPUSET.at(1));
+    Utils::gLogger->Log->info("XMarketCenter::HandleMarketData start thread CPU:{} ret:{}", m_MarketCenterConfig.CPUSET.at(1), ret);
     Message::PackMessage msg;
     if(m_MarketCenterConfig.BusinessType == Message::EBusinessType::EFUTURE)
     {
