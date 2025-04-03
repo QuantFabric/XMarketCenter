@@ -111,7 +111,7 @@ void XMarketCenter::Run()
     // 启动行情发布服务
     Utils::gLogger->Log->info("XMarketCenter::Run Start PubServer");
     m_PubServer = new PubServer();
-    m_PubServer->Start(m_MarketCenterConfig.MarketServer);
+    m_PubServer->Start(m_MarketCenterConfig.MarketServer, m_MarketCenterConfig.CPUSET.at(2));
 
     m_pPullThread = new std::thread(&XMarketCenter::PullMarketData, this);
     m_pHandleThread = new std::thread(&XMarketCenter::HandleMarketData, this);
@@ -151,7 +151,6 @@ void XMarketCenter::HandleMarketData()
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Future Ticker:{}", msg.FutureMarketData.Ticker);
                     if(m_PubServer->Push(msg))
                     {
-                        m_PubServer->PollMsg();
                     }
                     else
                     {
@@ -166,7 +165,6 @@ void XMarketCenter::HandleMarketData()
                 }
                 else
                 {
-                    m_PubServer->PollMsg();
                     break;
                 }
             }
@@ -179,7 +177,6 @@ void XMarketCenter::HandleMarketData()
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Spot Ticker:{}", msg.FutureMarketData.Ticker);
                     if(m_PubServer->Push(msg))
                     {
-                        m_PubServer->PollMsg();
                     }
                     else
                     {
@@ -236,7 +233,6 @@ void XMarketCenter::HandleMarketData()
                     Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Stock Ticker:{}", msg.StockMarketData.Ticker);
                     if(m_PubServer->Push(msg))
                     {
-                        m_PubServer->PollMsg();
                     }
                     else
                     {
@@ -251,7 +247,6 @@ void XMarketCenter::HandleMarketData()
                 }
                 else
                 {
-                    m_PubServer->PollMsg();
                     break;
                 }
             }
