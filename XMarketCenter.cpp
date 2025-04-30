@@ -147,20 +147,23 @@ void XMarketCenter::HandleMarketData()
                 bool ret = m_MarketGateWay->m_MarketMessageQueue.Pop(msg);
                 if(ret)
                 {
-                    MarketData::Check(msg.FutureMarketData);
-                    Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Future Ticker:{}", msg.FutureMarketData.Ticker);
-                    if(m_PubServer->Push(msg))
+                    bool ok = MarketData::Check(msg.FutureMarketData);
+                    if(ok)
                     {
-                    }
-                    else
-                    {
-                        Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Future Data failed, Ticker:{} PubServer m_SendQueue full", 
-                                                msg.FutureMarketData.Ticker);
-                    }
-                    // Forward to Monitor
-                    if(m_MarketCenterConfig.ToMonitor)
-                    {
-                        m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg), sizeof(msg));
+                        Utils::gLogger->Log->debug("XMarketCenter::HandleMarketData Receive Future Ticker:{}", msg.FutureMarketData.Ticker);
+                        if(m_PubServer->Push(msg))
+                        {
+                        }
+                        else
+                        {
+                            Utils::gLogger->Log->error("XMarketCenter::HandleMarketData Send Future Data failed, Ticker:{} PubServer m_SendQueue full", 
+                                                    msg.FutureMarketData.Ticker);
+                        }
+                        // Forward to Monitor
+                        if(m_MarketCenterConfig.ToMonitor)
+                        {
+                            m_PackClient->SendData(reinterpret_cast<const unsigned char *>(&msg), sizeof(msg));
+                        }
                     }
                 }
                 else
