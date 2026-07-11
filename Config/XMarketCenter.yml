@@ -6,7 +6,7 @@ MarketCenterConfig:
   ToMonitor : true
   Future : true
   TotalTick: 28801
-  MarketServer: PubServer
+  MarketServer: MarketServer
   RecvTimeOut: 60000
   CPUSET: -1, -1, -1
   CallAuctionPeriod: 09:29:00.000
