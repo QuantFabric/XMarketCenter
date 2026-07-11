@@ -99,3 +99,9 @@ TickerList:
     Ticker: SH000852
     ExchangeID: SH
     PriceTick: 0.01
+  -
+    # TestMarketGateWay::Run
+    TickerIndex: 20
+    Ticker: IF2209
+    ExchangeID: CFFEX
+    PriceTick: 0.2

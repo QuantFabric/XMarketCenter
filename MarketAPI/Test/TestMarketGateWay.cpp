@@ -27,8 +27,10 @@ void TestMarketGateWay::Run()
     while(true)
     {
         static int Tick = 0;
+        static int Volume = 0;
         memset(&m_MarketData, 0, sizeof(m_MarketData));
         m_MarketData.Tick = Tick++;
+        m_MarketData.Volume = Volume++;
         strncpy(m_MarketData.Ticker, "IF2209", sizeof(m_MarketData.Ticker));
         memcpy(m_MarketData.RecvLocalTime, Utils::getCurrentTimeUs(), sizeof(m_MarketData.RecvLocalTime));
         strncpy(m_MarketData.ExchangeID, "CFFEX", sizeof(m_MarketData.ExchangeID));
