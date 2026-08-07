@@ -61,12 +61,12 @@ include_directories(${CMAKE_SOURCE_DIR}/)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/include/)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/lib)
 # YAML-CPP
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.6.3/include/)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.6.3/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.8.0/include/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.8.0/lib)
 
 # CTP 6.7.8
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.8/include)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.8/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.11/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.11/lib)
 
 set(SOURCES CTPMarketGateWay.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/../../../Utils/Logger.cpp)
