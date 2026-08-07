@@ -4,69 +4,81 @@ TickerList:
     Ticker: a2606
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
     
   -
     TickerIndex: 1
     Ticker: a2609
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 2
     Ticker: b2606
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 3
     Ticker: b2609
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 4
     Ticker: c2606
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 5
     Ticker: c2609
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 6
     Ticker: cs2606
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 7
     Ticker: cs2609
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 8
     Ticker: p2606
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 9
     Ticker: p2609
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
 
   -
     TickerIndex: 10
     Ticker: m2606
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
     
   -
     TickerIndex: 11
     Ticker: m2609
     ExchangeID: DCE
     PriceTick: 1
+    MaxVolume: 100
