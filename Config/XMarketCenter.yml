@@ -17,7 +17,8 @@ MarketCenterConfig:
   APIConfig: /home/xtrader/QuantFabric/XMarketCenter/Config/MarketCenter.yml
 
 CTPMarketSource:
-  FrontAddr: tcp://180.168.146.187:10211
+  FrontAddr: tcp://182.254.243.31:30011
+  # FrontAddr: tcp://182.254.243.31:40011
   BrokerID: 9999
   Account: 188795
   Password: XXXXXX

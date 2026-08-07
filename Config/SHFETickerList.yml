@@ -1,72 +1,72 @@
 TickerList:                             
   -
     TickerIndex: 0
-    Ticker: ag2210
+    Ticker: ag2606
     ExchangeID: SHFE
     PriceTick: 1
     
   -
     TickerIndex: 1
-    Ticker: ag2211
+    Ticker: ag2609
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 2
-    Ticker: al2210
+    Ticker: al2606
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 3
-    Ticker: al2211
+    Ticker: al2609
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 4
-    Ticker: au2210
+    Ticker: au2606
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 5
-    Ticker: au2211
+    Ticker: au2609
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 6
-    Ticker: cu2210
+    Ticker: cu2606
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 7
-    Ticker: cu2211
+    Ticker: cu2609
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 8
-    Ticker: rb2210
+    Ticker: rb2606
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 9
-    Ticker: rb2211
+    Ticker: rb2609
     ExchangeID: SHFE
     PriceTick: 1
 
   -
     TickerIndex: 10
-    Ticker: sc2210
+    Ticker: sc2606
     ExchangeID: SHFE
     PriceTick: 1
     
   -
     TickerIndex: 11
-    Ticker: sc2211
+    Ticker: sc2609
     ExchangeID: SHFE
     PriceTick: 1
