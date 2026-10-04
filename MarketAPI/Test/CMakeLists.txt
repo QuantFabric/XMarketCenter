@@ -12,6 +12,7 @@ SET(MarketGateWay_Version ${PROJECT_NAME}_${AppVersion})
 #SET(CMAKE_BUILD_TYPE "debug")
 SET(CMAKE_BUILD_TYPE "RelWithDebInfo")
 set(CMAKE_CXX_STANDARD 11)
+add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
 
 macro(Get_CommitID SO_COMMITID)
     find_package(Git QUIET)     # 查找Git，QUIET静默方式不报错
@@ -62,8 +63,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/inclu
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/lib)
 
 # YAML-CPP
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.8.0/include/)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.8.0/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.9.0/include/)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.9.0/lib)
 
 
 set(SOURCES TestMarketGateWay.cpp
