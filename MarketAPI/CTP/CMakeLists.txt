@@ -40,7 +40,7 @@ macro(Get_UtilsCommitID GIT_UTILSCOMMITID)
     endif()
 endmacro()
 
-SET(APIVersion CTP6.7.8)
+SET(APIVersion CTP6.7.11)
 
 set(SO_COMMITID "")
 Get_CommitID(SO_COMMITID)

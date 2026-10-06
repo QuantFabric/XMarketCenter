@@ -24,13 +24,46 @@ bool CTPMarketGateWay::LoadAPIConfig()
         ret = false;
         m_Logger->Log->error("CTPMarketGateWay::LoadCTPMarkeSourceConfig {} failed, {}", m_MarketCenterConfig.APIConfig, errorBuffer);
     }
+    std::string app_log_path;
+    char* p = getenv("APP_LOG_PATH");
+    if(p == NULL)
+    {
+        char buffer[256] = {0};
+        getcwd(buffer, sizeof(buffer));
+        app_log_path = buffer;
+    }
+    else
+    {
+        app_log_path = p;
+    }
+    // 创建flow目录
+    std::string flowPath = app_log_path;
+    flowPath = app_log_path + "/flow/";
+    mkdir(flowPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     return ret;
 }
 
 void CTPMarketGateWay::Run()
 {
+    std::string app_log_path;
+    char* p = getenv("APP_LOG_PATH");
+    if(p == NULL)
+    {
+        char buffer[256] = {0};
+        getcwd(buffer, sizeof(buffer));
+        app_log_path = buffer;
+    }
+    else
+    {
+        app_log_path = p;
+    }
+    // 指定CTP flow目录
+    std::string flow = app_log_path + "/flow/";
     // 创建行情API实例
-    m_pMdUserApi = CThostFtdcMdApi::CreateFtdcMdApi();
+    m_pMdUserApi = CThostFtdcMdApi::CreateFtdcMdApi(flow.c_str(), 
+                                                    m_CTPMarketSourceConfig.IsUsingUdp, 
+                                                    m_CTPMarketSourceConfig.IsMulticast, 
+                                                    m_CTPMarketSourceConfig.IsProductionMode);
     // 注册事件类
     m_pMdUserApi->RegisterSpi(this);
     // 设置行情前置地址

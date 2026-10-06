@@ -23,6 +23,9 @@ CTPMarketSource:
   Account: 188795
   Password: XXXXXX
   TickerListPath: /home/xtrader/QuantFabric/XMarketCenter/Config/CFFEXTickerList.yml
+  IsUsingUdp: false
+  IsMulticast: false
+  IsProductionMode: true
 
 REMMarketSource:
   Account: 3866259
