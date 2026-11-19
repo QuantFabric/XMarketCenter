@@ -5,6 +5,7 @@
 #include "PackMessage.hpp"
 #include "YMLConfig.hpp"
 #include "Logger.h"
+#include "phmap.h"
 
 class MarketGateWay
 {
@@ -94,8 +95,12 @@ protected:
     Utils::MarketCenterConfig m_MarketCenterConfig;
     Utils::Logger* m_Logger;
     std::vector<Utils::TickerProperty> m_TickerPropertyList;
-    std::unordered_map<std::string, std::string> m_TickerExchangeMap;
-    std::unordered_map<std::string, Utils::TickerProperty> m_TickerPropertyMap;
+    phmap::flat_hash_map<std::string, std::string,
+                         phmap::Hash<std::string>,
+                         phmap::EqualTo<std::string>> m_TickerExchangeMap;
+    phmap::flat_hash_map<std::string, Utils::TickerProperty,
+                         phmap::Hash<std::string>,
+                         phmap::EqualTo<std::string>> m_TickerPropertyMap;
 };
 
 #endif // MARKETGATEWAY_H

@@ -1,8 +1,8 @@
 #ifndef MARKETCENTER_H
 #define MARKETCENTER_H
 
-#include <unordered_map>
 #include <algorithm>
+#include "phmap.h"
 #include "Singleton.hpp"
 #include "YMLConfig.hpp"
 #include "Logger.h"
@@ -32,8 +32,12 @@ protected:
 private:
     Utils::MarketCenterConfig m_MarketCenterConfig;
     std::vector<Utils::TickerProperty> m_TickerPropertyVec;
-    std::unordered_map<std::string, std::string> m_TickerExchangeMap;
-    std::unordered_map<std::string, int> m_TickerIndexMap;
+    phmap::flat_hash_map<std::string, std::string,
+                         phmap::Hash<std::string>,
+                         phmap::EqualTo<std::string>> m_TickerExchangeMap;
+    phmap::flat_hash_map<std::string, int,
+                         phmap::Hash<std::string>,
+                         phmap::EqualTo<std::string>> m_TickerIndexMap;
     std::string m_Command;
     HPPackClient *m_PackClient;
     PubServer* m_PubServer;

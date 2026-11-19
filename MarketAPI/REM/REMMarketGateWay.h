@@ -2,8 +2,6 @@
 #define REMMARKETGATEWAY_H
 
 #include <vector>
-#include <unordered_map>
-#include <unordered_set>
 #include <string.h>
 #include <stdio.h>
 #include "EESQuoteApi.h"

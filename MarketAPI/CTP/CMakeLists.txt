@@ -65,7 +65,7 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/SPDLog/1.8.5/lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.9.0/include/)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/YAML-CPP/0.9.0/lib)
 
-# CTP 6.7.8
+# CTP 6.7.11
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.11/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../XAPI/CTP/6.7.11/lib)
 

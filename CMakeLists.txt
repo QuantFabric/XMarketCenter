@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 PROJECT(XMarketCenter)
 # 输出so至build目录
@@ -93,6 +93,9 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/YAML-CPP/0.9.0/lib)
 
 # SHMServer
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../SHMServer/)
+
+# Parallel HashMap
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../XAPI/parallel_hashmap/)
 
 set(SOURCES main.cpp 
             HPPackClient.cpp
